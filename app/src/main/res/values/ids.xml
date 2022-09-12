@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="btnDial" type="id" />
+    <item name="misetting" type="id" />
+    <item name="miLogout" type="id" />
 </resources>

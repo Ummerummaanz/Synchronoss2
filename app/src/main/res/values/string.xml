@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="fontstyle">
+        <item name = "android:textColor">#400</item>
+        <item name="android:textSize">100dp</item>
+        <item name="android:textStyle">bold </item>
+    </style>
+
+    <style name="fontstyle.red" parent="Theme.Synchronoss2">
+        <item name="android:textColor">@android:color/holo_red_dark</item>
+    </style>
+</resources>
+
+
+
+

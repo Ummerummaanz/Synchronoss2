@@ -7,58 +7,95 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.AlarmClock
 import android.util.Log
+import android.view.ContextMenu
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import android.widget.ProgressBar
 
-class Activity3 : AppCompatActivity() {
+
+class Activity3 : AppCompatActivity() , View.OnFocusChangeListener {
     lateinit var ed1Name: EditText //declarartion
     lateinit var tvMain : TextView
+    lateinit var loginButton: Button
+    lateinit var  progressBar: ProgressBar
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_3)
         setContentView(R.layout.activity_3)
         ed1Name = findViewById(R.id.ed1Name)
+        loginButton = findViewById(R.id.btnLogin)
+        progressBar = findViewById(R.id.progressBar)
+
+        registerForContextMenu(loginButton)
         Log.i(TAG,"im in oncreate")
+        ed1Name.setOnFocusChangeListener(this)
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.i(TAG,"Starting UI visible")
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.mi_menu,menu)
+        return true
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.i(TAG, "resuming-restore state")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        super.onOptionsItemSelected(item)
+        when (item.itemId){
+            R.id.misetting -> {
+                Toast.makeText(this,   "opening settings",Toast.LENGTH_SHORT).show()
+            }
+            R.id.miLogout -> {
+                Toast.makeText(this,   "logging out",Toast.LENGTH_SHORT).show()
+
+            }
+        }
+        return true
+    }
+    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menuInflater.inflate(R.menu.main_context,menu)
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.i(TAG, "pausing-save state ")
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        super.onContextItemSelected(item)
+        when(item.itemId){
+            R.id.mi_Edit -> {
+                Toast.makeText(this," editing",Toast.LENGTH_SHORT).show()
+            }
+            R.id.mi_Delete -> {
+                Toast.makeText(this,"deleting",Toast.LENGTH_SHORT).show()
+
+            }
+        }
+        return true
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.i(TAG, "Stopping")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i(TAG, "Destroying")
-    }
-
-    fun clickhandler(viewclick: View) {
+    fun clickHandler(viewclick: View) {
        // Log.e(TAG,"click handler")
 
         when(viewclick.id){
             R.id.btnLogin -> {startHomeActivity()}
-            R.id.btnDail -> {startDialer()}
+            R.id.btnDial -> {startDialer()}
             R.id.btnAlarm -> {createAlarm("sync",12,53)}
+            R.id.btnMTest -> {getSetData()}
+            R.id.btnDownloads -> {downloadImage()}
 
         }
               print("outside")
+    }
+
+    private fun downloadImage() {
+        var downloadTask = DownloadTask(progressBar)
+        downloadTask.execute("http://imagedownload.url.com")
+    }
+
+    private fun getSetData() {
+        var name = ed1Name.text.toString()
+        tvMain.setText(name)
+
     }
 
     private fun startDialer() {
@@ -109,6 +146,25 @@ class Activity3 : AppCompatActivity() {
     companion object{
         var TAG = MainActivity::class.java.simpleName
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, dIntent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, dIntent)
+        if(resultCode == RESULT_OK) {
+            var contactData = dIntent?.extras?.getString("con")
+            tvMain.text = contactData
+        }
+    }
 
+    override fun onFocusChange(p0: View?, isFocussed: Boolean) {
+        if(isFocussed){
+            Toast.makeText(this,"focussed",Toast.LENGTH_SHORT).show()
+        }
+        else{
+            Toast.makeText(this,"lost focus",Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }
+
+
+
+

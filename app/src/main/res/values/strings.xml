@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Synchronoss2</string>
+<string name="app_name">Synchronoss2</string>
+<string name="enter_name">enter your name</string>
+<string name="enter_password">enter your secret code</string>
 </resources>

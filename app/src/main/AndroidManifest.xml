@@ -17,9 +17,7 @@
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
-        <activity
-            android:name=".HelloToast"
-            android:exported="false" />
+
         <activity
             android:name=".Activity3"
             android:exported="true">
@@ -29,9 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" />
+
     </application>
 
 </manifest>
