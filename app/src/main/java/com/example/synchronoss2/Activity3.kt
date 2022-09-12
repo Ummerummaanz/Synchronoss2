@@ -1,8 +1,13 @@
 package com.example.synchronoss2
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.nfc.Tag
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.AlarmClock
@@ -13,13 +18,14 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import android.widget.ProgressBar
+import androidx.core.app.NotificationCompat
 
 
 class Activity3 : AppCompatActivity() , View.OnFocusChangeListener {
     lateinit var ed1Name: EditText //declarartion
-    lateinit var tvMain : TextView
+    lateinit var tvMain: TextView
     lateinit var loginButton: Button
-    lateinit var  progressBar: ProgressBar
+    lateinit var progressBar: ProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,42 +37,47 @@ class Activity3 : AppCompatActivity() , View.OnFocusChangeListener {
         progressBar = findViewById(R.id.progressBar)
 
         registerForContextMenu(loginButton)
-        Log.i(TAG,"im in oncreate")
+        Log.i(TAG, "im in oncreate")
         ed1Name.setOnFocusChangeListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.mi_menu,menu)
+        menuInflater.inflate(R.menu.mi_menu, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         super.onOptionsItemSelected(item)
-        when (item.itemId){
+        when (item.itemId) {
             R.id.misetting -> {
-                Toast.makeText(this,   "opening settings",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "opening settings", Toast.LENGTH_SHORT).show()
             }
             R.id.miLogout -> {
-                Toast.makeText(this,   "logging out",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "logging out", Toast.LENGTH_SHORT).show()
 
             }
         }
         return true
     }
-    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        menuInflater.inflate(R.menu.main_context,menu)
+        menuInflater.inflate(R.menu.main_context, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         super.onContextItemSelected(item)
-        when(item.itemId){
+        when (item.itemId) {
             R.id.mi_Edit -> {
-                Toast.makeText(this," editing",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, " editing", Toast.LENGTH_SHORT).show()
             }
             R.id.mi_Delete -> {
-                Toast.makeText(this,"deleting",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "deleting", Toast.LENGTH_SHORT).show()
 
             }
         }
@@ -74,18 +85,67 @@ class Activity3 : AppCompatActivity() , View.OnFocusChangeListener {
     }
 
     fun clickHandler(viewclick: View) {
-       // Log.e(TAG,"click handler")
+        // Log.e(TAG,"click handler")
 
-        when(viewclick.id){
-            R.id.btnLogin -> {startHomeActivity()}
-            R.id.btnDial -> {startDialer()}
-            R.id.btnAlarm -> {createAlarm("sync",12,53)}
-            R.id.btnMTest -> {getSetData()}
-            R.id.btnDownloads -> {downloadImage()}
+        when (viewclick.id) {
+            R.id.btnLogin -> {
+                startHomeActivity()
+            }
+            R.id.btnDial -> {
+                startDialer()
+            }
+            R.id.btnAlarm -> {
+                createAlarm("sync", 12, 53)
+            }
+            R.id.btnMTest -> {
+                getSetData()
+            }
+            R.id.btnDownloads -> {
+                downloadImage()
+            }
+            R.id.btnNotify ->{(showNotification())}
 
         }
-              print("outside")
+        print("outside")
     }
+
+    private fun showNotification() {
+        createNotificationChannel()
+        val intent = Intent(this,HomeActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_IMMUTABLE)
+
+        var builder = NotificationCompat.Builder(this,"CHANNEL_ID")
+            .setSmallIcon(com.google.android.material.R.drawable.ic_clock_black_24dp)
+            .setContentTitle("Sync-3")
+            .setContentText("Android And Kotlin Training")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+
+
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        notificationManager.notify(123,builder.build())
+    }
+       private fun  createNotificationChannel() {
+           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+               val name = "Sync Promos Channel  Name"
+               val descriptionText = "This shows Notification wwrt Sync Promos"
+               val importance = NotificationManager.IMPORTANCE_DEFAULT
+               val channel = NotificationChannel("CHANNEL_ID",name,importance).apply {
+                   description =  descriptionText
+               }
+                val  notificationManager: NotificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE)  as NotificationManager
+               notificationManager.createNotificationChannel(channel)
+
+           }
+       }
+
+
 
     private fun downloadImage() {
         var downloadTask = DownloadTask(progressBar)

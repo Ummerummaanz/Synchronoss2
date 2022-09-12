@@ -31,8 +31,9 @@ public class DownloadTask extends AsyncTask<String, Integer, Bitmap> {
              } catch (InterruptedException e) {
                  e.printStackTrace();
              }
-           Log.i(TAG,"Sleep for 200 ms");
+
          }
+        Log.i(TAG,"Sleep for 200 ms");
         return null;
     }
 
