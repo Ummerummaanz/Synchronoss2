@@ -14,7 +14,7 @@ class SmsReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         // This method is called when the BroadcastReceiver is receiving an Intent broadcast.
           Toast.makeText(context,"Sync SMS Received",Toast.LENGTH_SHORT).show()
-
+           getSMSContent(intent)
     }
     fun getSMSContent(intent: Intent): Pair<String, String> {
         val data = intent.extras
