@@ -10,10 +10,10 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="216dp"
         android:onClick="handleClicks"
-        android:text="Finish"
+        android:text="Get Name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,9 +21,11 @@
         android:id="@+id/tvHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
+        android:layout_marginStart="72dp"
         android:layout_marginTop="80dp"
+        android:layout_marginBottom="190dp"
         android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/tvAuthor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,4 +41,17 @@
         android:text="Enter Contact"
         app:layout_constraintStart_toStartOf="@+id/tvHome"
         app:layout_constraintTop_toBottomOf="@+id/tvHome" />
+
+    <TextView
+        android:id="@+id/tvAuthor"
+        android:layout_width="193dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="188dp"
+        android:layout_marginBottom="368dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHome" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

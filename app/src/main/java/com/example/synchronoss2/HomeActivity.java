@@ -13,6 +13,7 @@ public class HomeActivity extends AppCompatActivity {
 
     EditText etContact;
     TextView tvHome;
+    TextView tvAuthor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         etContact = findViewById(R.id.etContact);
         tvHome = findViewById(R.id.tvHome);
+        tvAuthor = findViewById(R.id.tvAuthor);
         /*String name = getIntent().getExtras().getString("nkey");
         tvHome.setText("hello "+name);*/
 
@@ -27,6 +29,13 @@ public class HomeActivity extends AppCompatActivity {
     public void handleClicks(View viewclick) {
        /* String name = etContact.getText().toString();
         Toast.makeText(this,name, Toast.LENGTH_SHORT).show();*/
+        sendContactData();
+        searchBooks();
+    }
+
+
+
+    private void sendContactData() {
         //get the data to be sent
         String contactData = etContact.getText().toString();
         //send the data to the parent activity
@@ -36,6 +45,11 @@ public class HomeActivity extends AppCompatActivity {
         //close this activity
         finish();
 
+    }
+
+    private void searchBooks() {
+        String queryString = etContact.getText().toString();
+        new FetchBook(tvHome,tvAuthor).execute(queryString);
     }
 }
 
